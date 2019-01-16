@@ -9,7 +9,7 @@
             "email": "sergey@ananskikh.ru"
         }
     ],
-    "minimum-stability": "0.0.1",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "guzzlehttp/guzzle": "^6.3@dev"
