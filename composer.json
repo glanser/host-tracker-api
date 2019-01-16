@@ -1,0 +1,22 @@
+{
+    "name": "glanser/host-tracker-api",
+    "description": "Host-Tracker.com REST API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergey Ananskikh",
+            "email": "sergey@ananskikh.ru"
+        }
+    ],
+    "minimum-stability": "0.0.1",
+    "require": {
+        "php": ">=5.4.0",
+        "guzzlehttp/guzzle": "^6.3@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "HostTracker\\": "src/HostTracker/"
+        }
+    }
+}
