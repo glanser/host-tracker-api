@@ -4,7 +4,13 @@ namespace HostTracker\Api;
 
 use HostTracker\Client;
 
-
+/**
+ * Abstract Api class for Host-Tracker.com API
+ *
+ * @see https://www.host-tracker.com/api/web/v1/help
+ *
+ * @author Sergey Ananskikh <sergey at ananskikh dot ru>
+ */
 abstract class AbstractApi
 {
     /**
@@ -27,13 +33,14 @@ abstract class AbstractApi
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return string|false
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function post($path, array $data = [])
+    protected function post($path, array $data = [], $type = 'json')
     {
-        return $this->client->post($path, $data);
+        return $this->client->post($path, $data, $type);
     }
 
     /**
@@ -41,13 +48,14 @@ abstract class AbstractApi
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return string|false
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function get($path, array $data = [])
+    protected function get($path, array $data = [], $type = 'query')
     {
-        return $this->client->get($path, $data);
+        return $this->client->get($path, $data, $type);
     }
 
     /**
@@ -55,13 +63,14 @@ abstract class AbstractApi
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return string|false
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function put($path, array $data = [])
+    protected function put($path, array $data = [], $type = 'json')
     {
-        return $this->client->put($path, $data);
+        return $this->client->put($path, $data, $type);
     }
 
     /**
@@ -69,13 +78,29 @@ abstract class AbstractApi
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return string|false
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function delete($path, array $data = [])
+    protected function delete($path, array $data = [], $type = 'query')
     {
-        return $this->client->delete($path, $data);
+        return $this->client->delete($path, $data, $type);
+    }
+
+    /**
+     * Perform the client patch() method.
+     *
+     * @param string $path
+     * @param array $data
+     * @param string $type
+     *
+     * @return string|false
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function patch($path, array $data = [],  $type = 'json')
+    {
+        return $this->client->patch($path, $data, $type);
     }
 
     /**

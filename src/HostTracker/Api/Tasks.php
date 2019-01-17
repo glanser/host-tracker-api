@@ -2,10 +2,19 @@
 
 namespace HostTracker\Api;
 
-
+/**
+ * Tasks operations.
+ *
+ * @see https://www.host-tracker.com/api/web/v1/tasks/help
+ *
+ * @author Sergey Ananskikh <sergey at ananskikh dot ru>
+ */
 class Tasks extends AbstractApi
 {
     /**
+     * Get array of accepted task intervals.
+     * Currently accepted [1,5,15,30,60].
+     *
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -15,6 +24,9 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Get array of accepted task types.
+     * Currently ["Http","Ping","Port"] for all operations, ["Database","Snmp"] - read only, "Counter" - in development
+     *
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -24,6 +36,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Get all tasks or filtered via query string parameters.
+     *
      * @param array $params
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -35,6 +49,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Get task by id (GUID).
+     *
      * @param string $guid
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -45,6 +61,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Create http task.
+     *
      * @param $url
      * @param array $params
      * @return false|string
@@ -56,6 +74,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Create ping task.
+     *
      * @param $host
      * @param array $params
      * @return false|string
@@ -67,6 +87,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Create port task.
+     *
      * @param $host
      * @param int $port
      * @param array $params
@@ -79,6 +101,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Update general task parameters.
+     *
      * @param array $params
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -89,6 +113,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Update http task.
+     *
      * @param string $guid
      * @param array $params
      * @return false|string
@@ -100,6 +126,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Update ping task.
+     *
      * @param string $guid
      * @param array $params
      * @return false|string
@@ -111,6 +139,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Update port task.
+     *
      * @param string $guid
      * @param array $params
      * @return false|string
@@ -122,6 +152,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Delete task specified by id (GUID).
+     *
      * @param string $guid
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -132,6 +164,8 @@ class Tasks extends AbstractApi
     }
 
     /**
+     * Delete tasks by filter specified in query string.
+     *
      * @param array $params
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -141,4 +175,6 @@ class Tasks extends AbstractApi
         $params = $this->sanitizeParams($params);
         return $this->delete('/tasks', $params);
     }
+
+    // TODO create batched creation and/or update
 }

@@ -1,17 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sergey
- * Date: 17.01.19
- * Time: 0:02
- */
 
 namespace HostTracker\Api;
 
-
+/**
+ * Agents operations.
+ *
+ * @see https://www.host-tracker.com/api/web/v1/agents/help
+ *
+ * @author Sergey Ananskikh <sergey at ananskikh dot ru>
+ */
 class Agents extends AbstractApi
 {
     /**
+     * Get array of HostTracker world monitoring points.
+     *
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -21,6 +23,8 @@ class Agents extends AbstractApi
     }
 
     /**
+     * Get array of agent regions (Asia, Europe, America) (used for configuring tasks).
+     *
      * @return false|string
      * @throws \GuzzleHttp\Exception\GuzzleException
      */

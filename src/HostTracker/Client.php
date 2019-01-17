@@ -8,8 +8,9 @@ use GuzzleHttp\RequestOptions;
 /**
  * Host-Tracker.com API client
  *
- * @author Sergey Ananskikh <sergey at ananskikh dot ru>
+ * @see https://www.host-tracker.com/api/web/v1/help
  *
+ * @author Sergey Ananskikh <sergey at ananskikh dot ru>
  */
 class Client
 {
@@ -17,30 +18,45 @@ class Client
     protected $host = 'https://www.host-tracker.com/api/web/v1';
 
     /**
+     * Guzzle Http client
+     *
      * @var Guzzle
      */
     private $guzzle;
 
     /**
+     * Loaded APIs
+     *
      * @var array APIs
      */
     private $apis = [];
 
     /**
-     * @var string
+     * Bearer token
+     *
+     * @var \stdClass
      */
     private $token;
 
     /**
+     * Host-Tracker login
+     *
      * @var string
      */
     private $login;
 
     /**
+     * Host-Tracker password
+     *
      * @var string
      */
     private $password;
 
+    /**
+     * API classes for getter autoload
+     *
+     * @var array
+     */
     private $classes = [
         'users' => 'Users',
         'tasks' => 'Tasks',
@@ -49,10 +65,11 @@ class Client
         'subscriptions' => 'Subscriptions',
         'stats' => 'Stats',
         'outages' => 'Outages',
-    ];
+        ];
 
     /**
      * Client constructor.
+     *
      * @param $login
      * @param $password
      */
@@ -80,6 +97,8 @@ class Client
     }
 
     /**
+     * API loader
+     *
      * @param string $name
      *
      * @throws \InvalidArgumentException
@@ -104,13 +123,14 @@ class Client
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function post($path, array $data)
+    public function post($path, array $data, $type)
     {
-        return $this->runRequest($path, 'POST', $data);
+        return $this->runRequest($path, 'POST', $data, $type);
     }
 
     /**
@@ -118,13 +138,14 @@ class Client
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function get($path, array $data)
+    public function get($path, array $data, $type)
     {
-        return $this->runRequest($path, 'GET', $data);
+        return $this->runRequest($path, 'GET', $data, $type);
     }
 
     /**
@@ -132,13 +153,14 @@ class Client
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function put($path, array $data)
+    public function put($path, array $data, $type)
     {
-        return $this->runRequest($path, 'PUT', $data);
+        return $this->runRequest($path, 'PUT', $data, $type);
     }
 
     /**
@@ -146,25 +168,43 @@ class Client
      *
      * @param string $path
      * @param array $data
+     * @param string $type
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function delete($path, array $data)
+    public function delete($path, array $data, $type)
     {
-        return $this->runRequest($path, 'DELETE', $data);
+        return $this->runRequest($path, 'DELETE', $data, $type);
     }
 
     /**
+     * HTTP PATCH's $params to $path.
+     *
+     * @param string $path
+     * @param array $data
+     * @param string $type
+     *
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function patch($path, array $data, $type)
+    {
+        return $this->runRequest($path, 'PATCH', $data, $type);
+    }
+
+    /**
+     * Run request to REST API
      *
      * @param string $path
      * @param string $method
      * @param array $data
+     * @param string $type
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function runRequest($path, $method = 'GET', array $data = [])
+    protected function runRequest($path, $method = 'GET', array $data, $type)
     {
         // check bearer token
         if (isset($this->token->expirationUnixTime) && $this->token->expirationUnixTime <= (time() + 10)) {
@@ -172,26 +212,19 @@ class Client
             $this->users->token($this->login, $this->password);
         }
 
-        $headers = [
-            'Accept' => 'application/json',
-        ];
+        $headers = ['Accept' => 'application/json',];
 
         if (!empty($this->token)) {
             $headers['Authorization'] = 'Bearer ' . $this->token->ticket;
         }
 
         $params = [
-            'headers' => $headers
+            'headers' => $headers,
+            $type => $data,
         ];
-
-        if (in_array($method, ['GET', 'DELETE'])) {
-            $params['query'] = $data;
-        } else {
-            $params[RequestOptions::JSON] = $data;
-        }
 
         $response = $this->guzzle->request($method, $this->host . $path, $params);
 
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(), false);
     }
 }

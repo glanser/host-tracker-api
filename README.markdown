@@ -2,22 +2,25 @@
 
 A simple Object Oriented wrapper for Host-Tracker.com API, written with PHP.
 
-Uses [Host-Tracker.com API](https://www.host-tracker.com/blog/api).
+Uses [Host-Tracker.com API](https://www.host-tracker.com/api/web/v1/help).
 
 ## Features
 
 * ОК - user operations
 * ОК - agent operations
-* ОК - task operations
-* **NO** - contact operations
-* **NO** - subscription operations
+* NОК - task operations  
+(without POST /api/web/v1/tasks/$batch, no information in official documentation)
+* NOK - contact operations  
+(without POST /api/web/v1/contacts/$batch, no information in official documentation)
+* OK - subscription operations
 * ОК - stats operations
 * ОК - outages operations
-* **NO** -AdWords campaign operations
+* **NO** - AdWords campaign operations
 
 ## Requirements
 
 * PHP >= 5.4
+* [guzzlehttp/guzzle](https://github.com/guzzle/guzzle): ^6.3
 * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
 * The PHP [JSON](http://php.net/manual/en/book.json.php) extension
 

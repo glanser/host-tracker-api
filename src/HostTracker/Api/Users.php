@@ -2,11 +2,17 @@
 
 namespace HostTracker\Api;
 
-
+/**
+ * Users operations.
+ *
+ * @see https://www.host-tracker.com/api/web/v1/stats/help
+ *
+ * @author Sergey Ananskikh <sergey at ananskikh dot ru>
+ */
 class Users extends AbstractApi
 {
     /**
-     * Get bearer token for API
+     * Get authorization token for requests to other API.
      *
      * @param string $login
      * @param string $password
@@ -26,14 +32,9 @@ class Users extends AbstractApi
             }
         }
 
-        $result = $this->post('/users/token', [
-            'login' => $login,
-            'password' => $password,
-        ]);
-
+        $result = $this->post('/users/token', ['login' => $login, 'password' => $password,]);
         file_put_contents($tmpFile, json_encode($result));
 
         return $result;
-
     }
 }
