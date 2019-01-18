@@ -206,25 +206,42 @@ class Client
      */
     protected function runRequest($path, $method = 'GET', array $data, $type)
     {
-        // check bearer token
+        $this->checkBearerToken();
+
+        return json_decode(
+            $this->guzzle->request(
+                $method, 
+                $this->host . $path, 
+                $this->bringParams())
+            ->getBody(), 
+            false
+        );
+    }
+
+    /**
+     *
+     */
+    protected function checkBearerToken()
+    {
         if (isset($this->token->expirationUnixTime) && $this->token->expirationUnixTime <= (time() + 10)) {
             $this->token = null;
             $this->users->token($this->login, $this->password);
         }
+    }
 
+    /**
+     * @return array
+     */
+    protected function bringParams()
+    {
         $headers = ['Accept' => 'application/json',];
-
         if (!empty($this->token)) {
             $headers['Authorization'] = 'Bearer ' . $this->token->ticket;
         }
 
-        $params = [
+        return [
             'headers' => $headers,
             $type => $data,
         ];
-
-        $response = $this->guzzle->request($method, $this->host . $path, $params);
-
-        return json_decode($response->getBody(), false);
     }
 }
